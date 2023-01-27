@@ -33,7 +33,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:gravity="center"
-        android:text="TextView"
+        android:text="@string/category_label"
         app:layout_constraintBottom_toBottomOf="@+id/item_place_holder"
         app:layout_constraintEnd_toEndOf="@+id/item_place_holder"
         app:layout_constraintStart_toStartOf="@+id/item_place_holder"
