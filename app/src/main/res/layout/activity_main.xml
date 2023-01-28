@@ -59,6 +59,10 @@
                     android:id="@+id/carousel"
                     android:layout_width="match_parent"
                     android:layout_height="256dp"
+                    app:showBottomShadow="false"
+                    app:autoPlay="true"
+
+                    app:showCaption="false"
                     tools:ignore="MissingClass" />
             </androidx.cardview.widget.CardView>
 

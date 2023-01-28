@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.os.Bundle;
 
+import org.imaginativeworld.whynotimagecarousel.model.CarouselItem;
+
 import java.util.ArrayList;
 
 import dev.farjana.e_commerceapp.adapters.CategoryAdapter;
@@ -30,6 +32,15 @@ public class MainActivity extends AppCompatActivity {
 
         init_categories();
         init_products();
+        init_slider();
+
+    }
+
+    private void init_slider() {
+        binding.carousel.addData(new CarouselItem("https://img.freepik.com/free-photo/cropped-image-woman-inputting-card-information-key-phone-laptop-while-shopping-online_1423-68.jpg?w=740&t=st=1674913112~exp=1674913712~hmac=1004a08691d5752e828c29784ae6dade925b326e31b0963694252b8b466b7316","Buy 1 Get 1 Free"));
+        binding.carousel.addData(new CarouselItem("https://img.freepik.com/premium-photo/shopping-concept-empty-shopping-cart-laptop-rustic-wooden-background_532405-2683.jpg?w=740","Get 50% Discount"));
+        binding.carousel.addData(new CarouselItem("https://img.freepik.com/free-photo/cropped-image-woman-inputting-card-information-key-phone-laptop-while-shopping-online_1423-68.jpg?w=740&t=st=1674913112~exp=1674913712~hmac=1004a08691d5752e828c29784ae6dade925b326e31b0963694252b8b466b7316","Buy 1 Get 1 Free"));
+        binding.carousel.addData(new CarouselItem("https://img.freepik.com/premium-photo/shopping-concept-empty-shopping-cart-laptop-rustic-wooden-background_532405-2683.jpg?w=740","Get 50% Discount"));
 
     }
 
