@@ -38,6 +38,8 @@
                 android:fontFamily="@font/roboto_mono_medium"
                 android:gravity="center"
                 android:text="@string/product_name"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:textColor="#070707"
                 android:textSize="18sp" />
 
