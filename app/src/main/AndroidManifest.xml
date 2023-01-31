@@ -18,7 +18,8 @@
         <activity
             android:name=".activities.Shopping_Cart_Activity"
             android:exported="false"
-            android:label="Shopping Cart">
+            android:label="Shopping Cart"
+            android:theme="@style/Theme.ECommerceApp.ActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

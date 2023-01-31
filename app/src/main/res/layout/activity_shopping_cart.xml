@@ -6,4 +6,75 @@
     android:layout_height="match_parent"
     tools:context=".activities.Shopping_Cart_Activity">
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cartlistCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cartlist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:padding="5dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.cardview.widget.CardView>
+
+
+    <Button
+        android:id="@+id/continueBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:text="Continue Payment"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintVertical_bias="0.998"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <LinearLayout
+
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="#C3C1BA"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/continueBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.994">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="SubTotal"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="TK 300"
+            android:textColor="@color/teal_700"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

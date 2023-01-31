@@ -1,6 +1,11 @@
 package dev.farjana.e_commerceapp.models;
 
-public class Product {
+import com.hishd.tinycart.model.Item;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+
+public class Product implements Item, Serializable {
     private String product_name, product_img, status;
     private double product_price,discount;
 
@@ -71,4 +76,13 @@ public class Product {
         this.product_img = product_img;
     }
 
+    @Override
+    public BigDecimal getItemPrice() {
+        return new BigDecimal(product_price);
+    }
+
+    @Override
+    public String getItemName() {
+        return product_name;
+    }
 }
