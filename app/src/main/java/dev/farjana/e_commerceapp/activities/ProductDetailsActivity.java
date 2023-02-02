@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -16,6 +17,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.hishd.tinycart.model.Cart;
+import com.hishd.tinycart.util.TinyCartHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,11 +26,13 @@ import org.json.JSONObject;
 
 import dev.farjana.e_commerceapp.R;
 import dev.farjana.e_commerceapp.databinding.ActivityProductDetailsBinding;
+import dev.farjana.e_commerceapp.models.Product;
 import dev.farjana.e_commerceapp.utils.Constants;
 
 public class ProductDetailsActivity extends AppCompatActivity {
 
     ActivityProductDetailsBinding binding;
+    Product crntProduct;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +51,18 @@ public class ProductDetailsActivity extends AppCompatActivity {
         getProductDetails(id);
         getSupportActionBar().setTitle(name);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Cart cart = TinyCartHelper.getCart();
+
+        binding.addToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                cart.addItem(crntProduct,1);
+                binding.addToCart.setEnabled(false);
+                binding.addToCart.setText("Added to Cart");
+            }
+        });
 
 
     }
@@ -72,13 +89,23 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
             try {
                 JSONObject jsonObject = new JSONObject(response);
-                if(jsonObject.getString("status").equals("success")){
-                    JSONObject detailObject = jsonObject.getJSONObject("product");
+                JSONObject detailObject = null;
+                if (jsonObject.getString("status").equals("success")) {
+                    detailObject = jsonObject.getJSONObject("product");
                     String description = detailObject.getString("description");
                     binding.productDetails.setText(
                             Html.fromHtml(description)
                     );
                 }
+                crntProduct = new Product(
+                        detailObject.getString("name"),
+                        Constants.PRODUCTS_IMAGE_URL + detailObject.getString("image"),
+                        detailObject.getString("status"),
+                        detailObject.getDouble("price"),
+                        detailObject.getDouble("price_discount"),
+                        detailObject.getInt("stock"),
+                        detailObject.getInt("id")
+                );
             } catch (JSONException e) {
                 e.printStackTrace();
             }

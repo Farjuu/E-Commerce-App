@@ -6,11 +6,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.hishd.tinycart.model.Cart;
+import com.hishd.tinycart.util.TinyCartHelper;
 
 import java.util.ArrayList;
 
@@ -23,10 +26,18 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
     Context context;
     ArrayList<Product> products;
+    CartListener cartListener;
+    Cart cart;
 
-    public CartAdapter(Context context, ArrayList<Product> products) {
+    public interface CartListener{
+        public void onQuantityChanged();
+    }
+
+    public CartAdapter(Context context, ArrayList<Product> products, CartListener cartListener) {
         this.context = context;
         this.products = products;
+        this.cartListener = cartListener;
+        cart = TinyCartHelper.getCart();
     }
 
     @NonNull
@@ -44,7 +55,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 .load(product.getProduct_img())
                 .into(holder.binding.prductImg);
         holder.binding.name.setText(product.getProduct_name());
-        holder.binding.prdQntity.setText(String.valueOf(product.getStock()));
+        holder.binding.prdQntity.setText(String.valueOf(product.getQuantity()));
         holder.binding.price.setText("TK "+ product.getProduct_price());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -55,28 +66,56 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 AlertDialog dialog = new AlertDialog.Builder(context)
                         .setView(quantityDialogBinding.getRoot())
                         .create();
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
+                //dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
                quantityDialogBinding.productItemName.setText(product.getProduct_name());
                quantityDialogBinding.stock.setText("Stock: " +product.getStock());
 
+               quantityDialogBinding.quantity.setText(""+product.getQuantity());
                int stock = product.getStock();
                 quantityDialogBinding.plusBtn.setOnClickListener(new View.OnClickListener() {
                    @Override
                    public void onClick(View view) {
+                       int quantity = product.getQuantity();
+                       quantity++;
+                       if(quantity > product.getStock()){
+                           Toast.makeText(context,
+                                   "Max stock available is : "+product.getStock()
+                           ,Toast.LENGTH_SHORT).show();
+                           return;
+                       }else{
+                           product.setQuantity(quantity);
+                           quantityDialogBinding.quantity.setText(""+product.getQuantity());
 
+                       }
+
+                       notifyDataSetChanged();
+
+                       cart.updateItem(product,product.getQuantity());
+                       cartListener.onQuantityChanged();
                    }
                });
 
                 quantityDialogBinding.minusBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        int quantity = product.getQuantity();
+                        if(quantity > 1){
+                            quantity--;
+                        }
+                        product.setQuantity(quantity);
+                        quantityDialogBinding.quantity.setText(""+product.getQuantity());
 
+                        notifyDataSetChanged();
+
+                        cart.updateItem(product,product.getQuantity());
+                        cartListener.onQuantityChanged();
                     }
                 });
 
                 quantityDialogBinding.saveBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        dialog.dismiss();
 
                     }
                 });

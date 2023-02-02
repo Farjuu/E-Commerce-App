@@ -28,7 +28,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textSize="24sp"
+                    android:textSize="20sp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
                     android:text="@string/product_name" />
 
                 <TextView
@@ -37,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:textSize="24sp"
+                    android:textSize="20sp"
                     android:text="0" />
             </LinearLayout>
 
@@ -55,12 +57,12 @@
                     android:textSize="30sp"/>
 
                 <TextView
-                    android:id="@+id/changeItemNum"
+                    android:id="@+id/quantity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="0"
-                    android:textSize="24sp"
+                    android:textSize="20sp"
                     android:gravity="center"/>
 
                 <Button
