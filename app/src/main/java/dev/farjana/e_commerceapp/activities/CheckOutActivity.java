@@ -12,6 +12,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ import java.util.Map;
 import dev.farjana.e_commerceapp.adapters.CartAdapter;
 import dev.farjana.e_commerceapp.databinding.ActivityCheckOutBinding;
 import dev.farjana.e_commerceapp.models.Product;
+import dev.farjana.e_commerceapp.utils.Constants;
 
 public class CheckOutActivity extends AppCompatActivity {
 
@@ -60,6 +62,7 @@ public class CheckOutActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Processing");
+
         products = new ArrayList<>();
         cart = TinyCartHelper.getCart();
 
@@ -80,9 +83,9 @@ public class CheckOutActivity extends AppCompatActivity {
             }
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        binding.cartlist.setLayoutManager(layoutManager);
 
         DividerItemDecoration itemDecoration = new DividerItemDecoration(this,layoutManager.getOrientation());
+        binding.cartlist.setLayoutManager(layoutManager);
         binding.cartlist.addItemDecoration(itemDecoration);
         binding.cartlist.setAdapter(adapter);
 
@@ -95,10 +98,20 @@ public class CheckOutActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                /*Intent intent = new Intent(CheckOutActivity.this,PaymentActivity.class);
+
+                intent.putExtra("orderCode","X0950361Y");
+                startActivity(intent);*/
                 processPayment();
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return super.onSupportNavigateUp();
     }
 
     void processPayment(){
@@ -113,10 +126,11 @@ public class CheckOutActivity extends AppCompatActivity {
             productOrder.put("buyer",binding.fullname.getText().toString());
             productOrder.put("comment",binding.comment.getText().toString());
             productOrder.put("created_at", Calendar.getInstance().getTimeInMillis());
+            productOrder.put("updated_at", Calendar.getInstance().getTimeInMillis());
             productOrder.put("date_ship",Calendar.getInstance().getTimeInMillis());
             productOrder.put("email",binding.email.getText().toString());
             productOrder.put("phone",binding.phoneNum.getText().toString());
-            productOrder.put("serial",binding.fullname.getText().toString());
+            productOrder.put("serial","cab8c1a4e4421a3b");
             productOrder.put("shipping","");
             productOrder.put("shipping_location","");
             productOrder.put("shipping_rate","0.0");
@@ -146,54 +160,42 @@ public class CheckOutActivity extends AppCompatActivity {
 
 
 
-        }catch(JSONException e){
+        }catch(JSONException e){ }
 
-        }
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, POST_ORDER_URL, dataobject, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    if(response.getString("status").equals("success")){
-                        Toast.makeText(CheckOutActivity.this,"Success order", Toast.LENGTH_SHORT).show();
-                        String orderNumber = response.getJSONObject("data").getString("code");
-                        new AlertDialog.Builder(CheckOutActivity.this)
-                                .setTitle("Order Successful")
-                                .setMessage("Order number "+ orderNumber)
-                                .setCancelable(false)
-                                .setPositiveButton("Pay Now", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        Intent intent = new Intent(CheckOutActivity.this,PaymentActivity.class);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Constants.POST_ORDER_URL, dataobject, response -> {
+            try {
+                if(response.getString("status").equals("success")){
+                    Toast.makeText(CheckOutActivity.this,"Success order", Toast.LENGTH_SHORT).show();
+                    String orderNumber = response.getJSONObject("data").getString("code");
+                    new AlertDialog.Builder(CheckOutActivity.this)
+                            .setTitle("Order Successful")
+                            .setMessage("Order number "+ orderNumber)
+                            .setCancelable(false)
+                            .setPositiveButton("Pay Now", (dialogInterface, i) -> {
+                                Intent intent = new Intent(CheckOutActivity.this,PaymentActivity.class);
 
-                                        intent.putExtra("orderCode",orderNumber);
-                                        startActivity(intent);
-                                    }
-                                }).show();
-                    }else{
-                        Toast.makeText(CheckOutActivity.this,"Failed order", Toast.LENGTH_SHORT).show();
+                                intent.putExtra("orderCode",orderNumber);
+                                startActivity(intent);
+                            }).show();
+                    Log.e("res",response.toString());
+                }else{
+                    Toast.makeText(CheckOutActivity.this,"Failed order", Toast.LENGTH_SHORT).show();
+                    Log.e("res",response.toString());
+                    new AlertDialog.Builder(CheckOutActivity.this)
+                            .setTitle("Order failed")
+                            .setMessage("Something wrong ")
+                            .setCancelable(false)
+                            .setPositiveButton("Close", (dialogInterface, i) -> {
 
-                        new AlertDialog.Builder(CheckOutActivity.this)
-                                .setTitle("Order failed")
-                                .setMessage("Something wrong ")
-                                .setCancelable(false)
-                                .setPositiveButton("Close", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                                    }
-                                }).show();
-                    }
-                    progressDialog.dismiss();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                            }).show();
                 }
-
+                progressDialog.dismiss();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
 
-            }
+        }, error -> {
+
         }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
@@ -204,9 +206,5 @@ public class CheckOutActivity extends AppCompatActivity {
         };
         requestQueue.add(request);
     }
-    @Override
-    public boolean onSupportNavigateUp() {
-        finish();
-        return super.onSupportNavigateUp();
-    }
+
 }

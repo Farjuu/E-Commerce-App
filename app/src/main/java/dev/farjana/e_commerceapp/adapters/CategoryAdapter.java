@@ -1,6 +1,7 @@
 package dev.farjana.e_commerceapp.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import dev.farjana.e_commerceapp.R;
+import dev.farjana.e_commerceapp.activities.CategoryActivity;
 import dev.farjana.e_commerceapp.databinding.ItemcategoriesBinding;
 import dev.farjana.e_commerceapp.models.Category;
 
@@ -45,6 +47,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                 .into(holder.binding.itemPlaceHolder);
 
         holder.binding.itemPlaceHolder.setBackgroundColor(Color.parseColor(category.getColor()));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, CategoryActivity.class);
+                intent.putExtra("catId",category.getId());
+                intent.putExtra("catName",category.getName());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

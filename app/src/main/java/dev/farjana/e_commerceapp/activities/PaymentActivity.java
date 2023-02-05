@@ -24,7 +24,8 @@ public class PaymentActivity extends AppCompatActivity {
 
         binding.webview.setMixedContentAllowed(false);
         binding.webview.loadUrl(Constants.PAYMENT_URL + orderCode);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Payment ");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
