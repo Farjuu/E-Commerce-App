@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="100dp"
     android:layout_height="wrap_content">
 
     <com.makeramen.roundedimageview.RoundedImageView
@@ -33,6 +33,8 @@
         android:layout_marginBottom="8dp"
         android:gravity="center"
         android:text="@string/category_label"
+        android:maxLines="2"
+        android:ellipsize="end"
         app:layout_constraintBottom_toBottomOf="@+id/item_place_holder"
         app:layout_constraintEnd_toEndOf="@+id/item_place_holder"
         app:layout_constraintStart_toStartOf="@+id/item_place_holder"

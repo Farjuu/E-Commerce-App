@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
         getCategories();
 
-        GridLayoutManager layoutManager = new GridLayoutManager(this,4,GridLayoutManager.VERTICAL, false);
+        GridLayoutManager layoutManager = new GridLayoutManager(this,1,GridLayoutManager.HORIZONTAL, false);
 
         binding.categoriesList.setLayoutManager(layoutManager);
 
