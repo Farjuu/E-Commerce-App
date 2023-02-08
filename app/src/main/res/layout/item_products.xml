@@ -41,7 +41,7 @@
                 android:maxLines="2"
                 android:ellipsize="end"
                 android:textColor="#070707"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/product_price"
@@ -51,7 +51,7 @@
                 android:gravity="center"
                 android:text="@string/product_price"
                 android:textColor="#070707"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

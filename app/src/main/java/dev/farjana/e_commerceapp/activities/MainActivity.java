@@ -2,6 +2,7 @@ package dev.farjana.e_commerceapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -136,7 +137,8 @@ public class MainActivity extends AppCompatActivity {
 
         getCategories();
 
-        GridLayoutManager layoutManager = new GridLayoutManager(this,4);
+        GridLayoutManager layoutManager = new GridLayoutManager(this,4,GridLayoutManager.VERTICAL, false);
+
         binding.categoriesList.setLayoutManager(layoutManager);
 
         binding.categoriesList.setAdapter(categoryAdapter);
